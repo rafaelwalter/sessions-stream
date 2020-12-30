@@ -1,0 +1,48 @@
+
+<form class="form" [formGroup]="form" (submit)="onLoad()">
+  <mat-form-field>
+    <mat-label>Company</mat-label>
+    <input matInput formControlName="company" placeholder="Ex. 15">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>User</mat-label>
+    <input matInput formControlName="user" placeholder="Ex. 233">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Interval</mat-label>
+    <input matInput formControlName="interval" placeholder="Ex. 60">
+  </mat-form-field>
+
+  <mat-form-field color="accent">
+    <mat-label>Start</mat-label>
+    <input matInput formControlName="start" [matDatepicker]="pickerStart">
+    <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+    <mat-datepicker #pickerStart></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field color="accent">
+    <mat-label>End</mat-label>
+    <input matInput formControlName="end" [matDatepicker]="pickerEnd">
+    <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+    <mat-datepicker #pickerEnd></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="loading">LOAD</button>
+</form>
+
+<span *ngIf="error" class="error">{{ error }}</span>
+
+<mat-spinner *ngIf="loading"></mat-spinner>
+
+<google-chart
+  class="chart"
+  *ngIf="data && !loading"
+  [title]="title"
+  [type]="type"
+  [data]="data"
+  [columns]="columns"
+  [options]="options"
+  [dynamicResize]="true">
+</google-chart>
