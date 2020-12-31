@@ -18,8 +18,7 @@ export class AppComponent {
   ) {}
 
   title = 'Active Sessions';
-  type = ChartType.LineChart;
-
+  type = ChartType.ColumnChart;
 
   data: [Date, number][];
   columns: Column[] = [

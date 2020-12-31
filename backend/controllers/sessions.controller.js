@@ -22,7 +22,7 @@ module.exports = class SessionsController {
     const activeInterval = parseInt(active_interval || 15);
   
     const lastSessionByUser = new Map();
-    const sessionsCountByMonth = new Map();
+    const sessionsCountByDay = new Map();
     const filters = [];
   
     if (company) {
@@ -57,22 +57,22 @@ module.exports = class SessionsController {
       const current = new Date(log.date);
 
       const diff = Math.abs(last - current);
-      const minutes = Math.floor((diff/1000)/60);
+      const minutes = Math.floor((diff / 1000) / 60);
   
       if (!last || minutes > activeInterval) {
         // update last session
         lastSessionByUser.set(log.userId, current);
 
-        // ISO format
-        const target = `${current.getFullYear()}-${current.getMonth() + 1}-01`;
+        // day in ISO format
+        const groupKey = `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}`;
 
         // bump session count by month
-        const sessionsCount = sessionsCountByMonth.get(target) || 0;
-        sessionsCountByMonth.set(target, sessionsCount + 1);
+        const sessionsCount = sessionsCountByDay.get(groupKey) || 0;
+        sessionsCountByDay.set(groupKey, sessionsCount + 1);
       }
     }, () => {
       res.json({
-        data: Array.from(sessionsCountByMonth.entries()),
+        data: Array.from(sessionsCountByDay.entries()),
       });
     });
   }
